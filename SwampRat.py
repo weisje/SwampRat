@@ -6,7 +6,7 @@
 # Development Date: 13 May 2020
 # Latest Update: 23 May 2020
 # Program Purpose: Security Tool for scanning open network ports, detecting services running on those ports, determine if services are vulnerable to known CVEs, attempting to log into them with default credentials
-# Git Link: None as of Latest Update
+# Git Link: https://github.com/weisje/SwampRat.git
 ###############################################################################
 # Notes:
 # -Sources:
