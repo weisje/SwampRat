@@ -4,7 +4,7 @@
 # Program Name: Swamp Rat
 # Version Number: 0.1
 # Development Date: 13 May 2020
-# Latest Update: 13 May 2020
+# Latest Update: 23 May 2020
 # Program Purpose: Security Tool for scanning open network ports, detecting services on those ports, and attempting to log into them with default credentials
 # Git Link: None as of Latest Update
 ###############################################################################
