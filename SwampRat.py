@@ -10,7 +10,6 @@
 ###############################################################################
 # Notes:
 # -Sources:
-#   -Port Scanner: https://www.pythonforbeginners.com/code-snippets-source-code/port-scanner-in-python/
 #
 ###############################################################################
 
