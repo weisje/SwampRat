@@ -6,28 +6,31 @@
 # Development Date: 13 May 2020
 # Latest Update: 23 May 2020
 # Program Purpose: Security Tool for scanning open network ports, detecting services running on those ports, determine if services are vulnerable to known CVEs, attempting to log into them with default credentials
+# Current Branch Name: 00001-feature-tcp-port-scanner
+# Initial Branch Name: 00001-feature-tcp-port-scanner
 # Git Link: https://github.com/weisje/SwampRat.git
-###############################################################################
-# Notes:
-# -Sources:
-#
-###############################################################################
+################################################################################
 
-#*IMPORT BLOCK BEGIN*(13/05/2020 -JW)
-import os
-import socket
-import subprocess
-import sys
-import time
+#*IMPORT BLOCK BEGIN*(23/05/2020 -JW)
 from datetime import datetime
-#*IMPORT BLOCK END*(13/05/2020 -JW)
+import os
+from queue import Queue
+import socket
+#import subprocess
+import sys
+import threading
+import time
+#*IMPORT BLOCK END*(23/05/2020 -JW)
 
 #*GLOBAL LAMBDA BLOCK BEGIN*(13/05/2020 -JW)
 sleep = lambda x: time.sleep(x)
 #GLOBAL LAMBDA BLOCK END*(13/05/2020 -JW)
 
-#*FUNCTION BLOCK BEGIN*(13/05/2020 -JW)
+#*CLASS BLOCK BEGIN*(23/05/2020 -JW)
 
+#*CLASS BLOCK END*(23/05/2020 -JW)
+
+#*FUNCTION BLOCK BEGIN*(13/05/2020 -JW)
 # def foo():
 #     #**VARIABLE BLOCK BEGIN**
 #
@@ -88,3 +91,13 @@ if __name__ == '__main__':
     logo()
     main()
     sys.exit(0)
+
+###############################################################################
+# Notes:
+#
+# -Version Goals:
+#   0.1 - Successfully scan for open TCP/UDP Ports across a range of IP Addresses and report the results
+#
+# -Sources:
+#
+###############################################################################
