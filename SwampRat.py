@@ -182,11 +182,11 @@ class Ports:
       21742,21780,21784,21800,21834,21842,21847,21868,21898,21923,21948,21967,22029,22043,22045,22053,22105,22109,22123,22124]) #[2] (28/05/2020 -JW)
 
     def portCloner(self, originalPortList, newPortList):
-        #**VARIABLE BLOCK BEGIN**
+        #**VARIABLE BLOCK BEGIN** (28/05/2020 -JW)
         oldList = originalPortList
         addList = newPortList
         newList = []
-        #**VARIABLE BLOCK END**
+        #**VARIABLE BLOCK END** (28/05/2020 -JW)
 
         newList.extend(oldList)
         newList.extend(addList)
