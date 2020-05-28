@@ -36,8 +36,9 @@ sleep = lambda x: time.sleep(x)
 
 #Class for storing all the types of common port configurations. MORE INFO DURING DEVELOPMENT (28/05/2020 -JW)
 class Ports:
-  """Class for storing all the types of common port configurations"""
-  def __init__(self,portSelect):
+    """Class for storing all the types of common port configurations"""
+
+    def __init__(self,portSelect):
       self.portSelect = portSelect
       #Table C-1 of [1] (28/05/2020 -JW)
       self.wellKnownPorts = [1,5,7,9,11,13,17,18,19,20,21,22,23,25,37,39,42,43,49,50,
@@ -49,18 +50,18 @@ class Ports:
 
       #Table C-2 of [1] (28/05/2020 -JW)
       self.unixSpecificPorts = [515,519,521,525,532,548,556] #Ports that can run TCP or UDP and have the same service regardless of the protocol running. [1] (28/05/2020 -JW)
-      self.unixSpecificHybridPorts = unixSpecificPorts.extend((512,513,514,520)) #Ports that can run TCP or UDP, but provide different services depending on whether or not it runs TCP or UDP. [1] (28/05/2020 -JW)
-      self.unixSpecificTCPPorts = unixSpecificHybridPorts.extend((526,530,531,540,543,544)) #Ports that can only run TCP. [1] (28/05/2020 -JW)
-      self.unixSpecificUDPPorts = unixSpecificHybridPorts.extend((517,518,533)) #Ports that can only run UDP. [1] (28/05/2020 -JW)
+      self.unixSpecificHybridPorts = self.portCloner(self.unixSpecificPorts, [512,513,514,520]) #Ports that can run TCP or UDP, but provide different services depending on whether or not it runs TCP or UDP. [1] (28/05/2020 -JW)
+      self.unixSpecificTCPPorts = self.portCloner(self.unixSpecificHybridPorts, [526,530,531,540,543,544]) #Ports that can only run TCP. [1] (28/05/2020 -JW)
+      self.unixSpecificUDPPorts = self.portCloner(self.unixSpecificHybridPorts, [517,518,533]) #Ports that can only run UDP. [1] (28/05/2020 -JW)
 
       #Table C-3 of [1] (28/05/2020 -JW)
       self.registeredPorts = [1080,1236,1300,1433,1434,1494,1512,1524,1525,1645,1646,1649,1701,1718,1719,1720,1758,1789,1812,1813,
       1911,1985,1986,1997,2049,2102,2103,2104,2401,2600,2601,2602,2603,2604,2605,2606,2809,3130,3306,3346,
       4011,4321,4444,5002,5308,5999,7000,7001,7002,7003,7004,7005,7006,7007,7008,7009,9876,10080,11371,
       11720,13720,13721,13722,13724,13782,13783,22273,26000,26208,33434] #Registered Ports that can run TCP or UDP and have the same service regardless of the protocol running. [1] (28/05/2020 -JW)
-      self.registeredHybridPorts = registeredPorts.extend((2430,2431,2433)) # [1] (28/05/2020 -JW)
-      self.registeredTCPPorts = registeredHybridPorts.extend((6000)) # [1] (28/05/2020 -JW)
-      self.registeredUDPPorts = registeredHybridPorts.extend((1759,2432)) # [1] (28/05/2020 -JW)
+      self.registeredHybridPorts = self.portCloner(self.registeredPorts, [2430,2431,2433]) # [1] (28/05/2020 -JW)
+      self.registeredTCPPorts = self.portCloner(self.registeredHybridPorts, [6000]) # [1] (28/05/2020 -JW)
+      self.registeredUDPPorts = self.portCloner(self.registeredHybridPorts, [1759,2432]) # [1] (28/05/2020 -JW)
 
       #Table C-4 of [1] (28/05/2020 -JW)
       self.AppleTalkDDPPorts = [1,2,4,6] # [1] (28/05/2020 -JW)
@@ -71,17 +72,17 @@ class Ports:
       #Table C-6 of [1] (28/05/2020 -JW)
       self.unregisteredRedHatEnterprisePorts = [106,808,953,2150,2988,3455,5432,5232,5354,5355,6667,8008,8080,8081,9359,10081,20011,20012,24554,27374,
       60177,60179] # [1] (28/05/2020 -JW)
-      self.unregisteredRedHatEnterpriseTCPPorts = unregisteredRedHatEnterprisePorts.extend((15,98,465,616,871,901,1127,1178,1313,1529,2003,3128,4557,4559,5680,6010,7100,7666,9100,10082,
-      10083,22305,22289,22321)) # [1] (28/05/2020 -JW)
+      self.unregisteredRedHatEnterpriseTCPPorts = self.portCloner(self.unregisteredRedHatEnterprisePorts,[15,98,465,616,871,901,1127,1178,1313,1529,2003,3128,4557,4559,5680,6010,7100,7666,9100,10082,
+      10083,22305,22289,22321]) # [1] (28/05/2020 -JW)
 
       self.topTenTCPPorts = [80,23,443,21,22,25,3389,110,445,139] #[2] (28/05/2020 -JW)
-      self.topTwentyTCPPorts = topTenTCPPorts.extend((143,53,135,3306,8080,1723,111,995,993,5900)) #[2] (28/05/2020 -JW)
-      self.topFiftyTCPPorts = topTwentyTCPPorts.extend((1025,587,8888,199,1720,465,548,113,81,6001,10000,514,5060,179,1026,2000,8443,8000,32768,554,
-      26,1433,49152,2001,515,8008,49154,1027,5666,646)) #[2] (28/05/2020 -JW)
-      self.topHundredTCPPorts = topFiftyTCPPorts.extend((5000,5631,631,49153,8081,2049,88,79,5800,106,2121,1110,49155,6000,513,990,5357,427,49156,543,
+      self.topTwentyTCPPorts = self.portCloner(self.topTenTCPPorts,[143,53,135,3306,8080,1723,111,995,993,5900]) #[2] (28/05/2020 -JW)
+      self.topFiftyTCPPorts = self.portCloner(self.topTwentyTCPPorts, [1025,587,8888,199,1720,465,548,113,81,6001,10000,514,5060,179,1026,2000,8443,8000,32768,554,
+      26,1433,49152,2001,515,8008,49154,1027,5666,646]) #[2] (28/05/2020 -JW)
+      self.topHundredTCPPorts = self.portCloner(self.topFiftyTCPPorts, [5000,5631,631,49153,8081,2049,88,79,5800,106,2121,1110,49155,6000,513,990,5357,427,49156,543,
       544,5101,144,7,389,8009,3128,444,9999,5009,7070,5190,3000,5432,1900,3986,13,1029,9,5051,
-      6646,49157,1028,873,1755,2717,4899,9100,119,37)) #[2] (28/05/2020 -JW)
-      self.topFiveHundredTCPPorts = topHundredTCPPorts.extend((1000,3001,5001,82,10010,1030,9090,2107,1024,2103,6004,1801,5050,19,8031,1041,255,1048,1049,1053,
+      6646,49157,1028,873,1755,2717,4899,9100,119,37]) #[2] (28/05/2020 -JW)
+      self.topFiveHundredTCPPorts = self.portCloner(self.topHundredTCPPorts, [1000,3001,5001,82,10010,1030,9090,2107,1024,2103,6004,1801,5050,19,8031,1041,255,1048,1049,1053,
       1054,1056,1064,1065,2967,3703,17,808,3689,1031,1044,1071,5901,100,9102,1039,2869,4001,5120,8010,
       9000,2105,636,1038,2601,1,7000,1066,1069,625,311,280,254,4000,1761,5003,2002,1998,2005,1032,
       1050,6112,3690,1521,2161,1080,6002,2401,902,4045,787,7937,1058,2383,32771,1033,1040,1059,50000,5555,
@@ -100,8 +101,8 @@ class Ports:
       2135,2144,2160,2190,2260,2381,2399,2492,2607,2718,2811,2875,3017,3031,3071,3211,3300,3301,3323,3325,
       3351,3367,3404,3551,3580,3659,3766,3784,3801,3827,3998,4003,4126,4129,4449,5030,5222,5269,5414,5633,
       5718,5810,5825,5877,5910,5911,5925,5959,5960,5961,5962,5987,5988,5989,6123,6129,6156,6389,6580,6788,
-      6901,7106,7625,7627,7741,7777,7778,7911,8086,8087,8181,8222,8333,8400,8402,8600,8649,8873,8994,9002)) #[2] (28/05/2020 -JW)
-      self.topOneThousandTCPPorts = topFiveHundredTCPPorts.extend((9010,9011,9080,9220,9290,9485,9500,9502,9503,9618,9900,9968,10002,10012,10024,10025,10566,10616,10617,10621,
+      6901,7106,7625,7627,7741,7777,7778,7911,8086,8087,8181,8222,8333,8400,8402,8600,8649,8873,8994,9002]) #[2] (28/05/2020 -JW)
+      self.topOneThousandTCPPorts = self.portCloner(self.topFiveHundredTCPPorts,[9010,9011,9080,9220,9290,9485,9500,9502,9503,9618,9900,9968,10002,10012,10024,10025,10566,10616,10617,10621,
       10626,10628,10629,11110,11967,13456,14000,14442,15002,15003,15660,16001,16016,16018,17988,19101,19801,19842,20000,20031,
       20221,20222,21571,22939,24800,25734,27715,28201,30000,30718,31038,32781,32782,33899,34571,34572,34573,40193,48080,49158,
       49159,49160,50003,50006,50800,57294,58080,60020,63331,65129,89,691,212,1001,1999,2020,32776,2998,6003,7002,
@@ -125,16 +126,16 @@ class Ports:
       256,406,783,843,2042,2045,5998,9929,31337,44442,1092,1095,1102,1105,1113,1121,1123,1126,1130,1132,
       1137,1141,1145,1147,1149,1154,1163,1164,1165,1166,1174,1185,1187,1192,1198,1213,1216,1217,1233,1236,
       1244,1259,1277,1287,1300,1301,1309,1322,1328,1556,1583,1594,1641,1658,1688,1719,1721,1805,1812,1839,
-      1875,1914,1971,1972,1974,2099,2170,2196,2200,2288,2366,2382,2557,2710,2800,2910,2920,2968,3007,3013)) #[2] (28/05/2020 -JW)
+      1875,1914,1971,1972,1974,2099,2170,2196,2200,2288,2366,2382,2557,2710,2800,2910,2920,2968,3007,3013]) #[2] (28/05/2020 -JW)
 
       self.topTenUDPPorts = [631,161,137,123,138,1434,445,135,67,53] #[2] (28/05/2020 -JW)
-      self.topTwentyUDPPorts = topTenUDPPorts.extend((139,500,68,520,1900,4500,514,49152,162,69)) #[2] (28/05/2020 -JW)
-      self.topFiftyUDPPorts = topTwentyUDPPorts.extend((5353,111,49154,1701,998,996,997,999,3283,49153,1812,136,2222,2049,32768,5060,1025,1433,3456,80,
-      20031,1026,7,1646,1645,593,518,2048,626,1027)) #[2] (28/05/2020 -JW)
-      self.topHundredUDPPorts = topFiftyUDPPorts.extend((177,1719,427,497,4444,1023,65024,19,9,49193,1029,49,88,1028,17185,1718,49186,2000,31337,49192,
+      self.topTwentyUDPPorts = self.portCloner(self.topTenUDPPorts,[139,500,68,520,1900,4500,514,49152,162,69]) #[2] (28/05/2020 -JW)
+      self.topFiftyUDPPorts = self.portCloner(self.topTwentyUDPPorts,[5353,111,49154,1701,998,996,997,999,3283,49153,1812,136,2222,2049,32768,5060,1025,1433,3456,80,
+      20031,1026,7,1646,1645,593,518,2048,626,1027]) #[2] (28/05/2020 -JW)
+      self.topHundredUDPPorts = self.portCloner(self.topFiftyUDPPorts,[177,1719,427,497,4444,1023,65024,19,9,49193,1029,49,88,1028,17185,1718,49186,2000,31337,49192,
       49201,515,2223,443,49181,1813,120,158,49200,3703,32815,17,5000,32771,33281,1030,623,1022,32769,5632,
-      10000,49156,49182,49191,49194,9200,30718,49185,49188,49190)) #[2] (28/05/2020 -JW)
-      self.topFiveHundredUDPPorts = topHundredUDPPorts.extend((49211,5001,5355,32770,34555,34861,37444,1032,3130,4045,1031,49158,49196,37,2967,4000,989,3659,4672,34862,
+      10000,49156,49182,49191,49194,9200,30718,49185,49188,49190]) #[2] (28/05/2020 -JW)
+      self.topFiveHundredUDPPorts = self.portCloner(self.topHundredUDPPorts, [49211,5001,5355,32770,34555,34861,37444,1032,3130,4045,1031,49158,49196,37,2967,4000,989,3659,4672,34862,
       23,49162,49187,49189,49195,2148,41524,10080,32772,407,42,33354,1034,49180,49199,1001,3389,6346,21,13,
       517,1068,990,1041,1045,1782,6001,19283,49171,49179,49184,49202,49205,49208,49209,49210,9876,39213,800,389,
       464,1036,1038,1039,1419,192,199,44968,1008,49159,49166,1024,1033,19682,22986,22,2002,664,1021,11487,
@@ -153,8 +154,8 @@ class Ports:
       25337,25462,25541,25546,25709,25931,26407,26415,26720,26872,26966,27473,27482,27707,27899,28122,28369,28465,28493,28543,
       28641,28840,28973,29078,29243,29256,29810,29977,30263,30544,30656,30697,30704,30975,31059,31109,31189,31195,31365,31625,
       31731,32345,32385,32528,1346,20,2,32780,772,1214,1993,402,773,31335,774,814,838,903,965,1007,
-      1046,1050,1053,1055,1057,1060,1081,1100,1105,1124,1234,1804,2343,3664,6002,6050,8000,8010,9000,9001)) #[2] (28/05/2020 -JW)
-      self.topOneThousandUDPPorts = topFiveHundredUDPPorts.extend((9877,1059,1524,5555,5010,32778,27444,32798,33030,33249,33459,33717,33866,33872,34038,34079,34358,34422,34433,34570,
+      1046,1050,1053,1055,1057,1060,1081,1100,1105,1124,1234,1804,2343,3664,6002,6050,8000,8010,9000,9001]) #[2] (28/05/2020 -JW)
+      self.topOneThousandUDPPorts = self.portCloner(self.topFiveHundredUDPPorts, [9877,1059,1524,5555,5010,32778,27444,32798,33030,33249,33459,33717,33866,33872,34038,34079,34358,34422,34433,34570,
       34577,34578,34579,34580,34758,34796,34855,35702,35794,36108,36384,36458,36489,36669,36778,36893,36945,37144,37212,37393,
       37602,37761,37783,37813,37843,38063,38412,38498,38615,39217,39632,39683,39714,39723,40019,40539,40622,40711,40724,40805,
       40847,40866,41308,41446,41638,41702,41774,41896,41967,41971,42056,42313,42431,42434,42557,42577,42627,42639,43094,43195,
@@ -178,8 +179,18 @@ class Ports:
       20665,20678,20679,20710,20717,20742,20752,20762,20791,20817,20842,20848,20851,20865,20872,20876,20884,20919,21000,21016,
       21060,21083,21104,21111,21167,21186,21206,21207,21247,21282,21303,21318,21320,21333,21344,21358,21360,21364,21366,21405,
       21454,21468,21476,21514,21524,21525,21556,21566,21568,21576,21609,21625,21644,21649,21655,21663,21674,21698,21702,21710,
-      21742,21780,21784,21800,21834,21842,21847,21868,21898,21923,21948,21967,22029,22043,22045,22053,22105,22109,22123,22124)) #[2] (28/05/2020 -JW)
+      21742,21780,21784,21800,21834,21842,21847,21868,21898,21923,21948,21967,22029,22043,22045,22053,22105,22109,22123,22124]) #[2] (28/05/2020 -JW)
 
+    def portCloner(self, originalPortList, newPortList):
+        #**VARIABLE BLOCK BEGIN**
+        oldList = originalPortList
+        addList = newPortList
+        newList = []
+        #**VARIABLE BLOCK END**
+
+        newList.extend(oldList)
+        newList.extend(addList)
+        return newList
 #*CLASS BLOCK END*(28/05/2020 -JW)
 
 #*FUNCTION BLOCK BEGIN*(28/05/2020 -JW)
@@ -194,7 +205,7 @@ class Ports:
 
 # Function for creating logo when the program is ran and prints it to the console. Function does not recieve data.  Expected return data: None (28/05/2020 -JW)
 def logo():
-    """"""
+
         print("\n\n")
         print("""
       ██████  █     █░ ▄▄▄       ███▄ ▄███▓ ██▓███      ██▀███   ▄▄▄     ▄▄▄█████▓
@@ -238,17 +249,16 @@ def clear():
     except:
         pass
 
-def foo():
-    #**VARIABLE BLOCK BEGIN**
+#Function for adding new ports to existing core ones before creating a new list.  Expected return value: List of items. '[1,2,3]', '['a','b','c']' '['ABC', 1, 2, 3]' (28/05/2020 -JW)
 
-    #**VARIABLE BLOCK END**
-    pass
 
 def main():
     #**VARIABLE BLOCK BEGIN**(13/05/2020 -JW)
 
     #**VARIABLE BLOCK END**(13/05/2020 -JW)
-    print("Success")
+    ClassTest = Ports(1)
+    print(ClassTest.topTenUDPPorts)
+    print(ClassTest.topTwentyUDPPorts)
 #*FUNCTION BLOCK END*(28/05/2020 -JW)
 
 if __name__ == '__main__':
@@ -264,4 +274,5 @@ if __name__ == '__main__':
 #
 # -Sources:
 # [1] “Appendix C. Common Ports,” Common Ports. [Online]. Available: https://web.mit.edu/rhel-doc/4/RH-DOCS/rhel-sg-en-4/ch-ports.html. [Accessed: 28-May-2020].
+# [2] nmap-services ports sorted by open-frequency.  Available in nmap file location of PC.  [Accessed: 28-May-2020].
 ###############################################################################
