@@ -256,9 +256,7 @@ def main():
     #**VARIABLE BLOCK BEGIN**(13/05/2020 -JW)
 
     #**VARIABLE BLOCK END**(13/05/2020 -JW)
-    ClassTest = Ports(1)
-    print(ClassTest.topTenUDPPorts)
-    print(ClassTest.topTwentyUDPPorts)
+    pass
 #*FUNCTION BLOCK END*(28/05/2020 -JW)
 
 if __name__ == '__main__':
